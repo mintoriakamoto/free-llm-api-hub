@@ -1048,12 +1048,12 @@ const legalPage = (slug, title, bodyHtml) => {
     `</div></main>`;
   writeFileSync(
     join(ROOT, `site/legal/${slug}.html`),
-    htmlPage({ title: `${title} · Free LLM API Hub`, desc: `${title} for Free LLM API Hub, operated by ${ORG}.`, canonical: `${SITE}/legal/${slug}`, main, noindex: true })
+    htmlPage({ title: `${title} · Free LLM API Hub`, desc: `${title} for Free LLM API Hub, operated by ${ORG}`, canonical: `${SITE}/legal/${slug}`, main, noindex: true })
   );
 };
 
 legalPage('privacy', 'Privacy', `
-<p>This site is a static, open-source reference operated by ${ORG}. It has no user accounts, no ads, and no third-party analytics or tracking.</p>
+<p>This site is a static, open-source reference operated by ${ORG} It has no user accounts, no ads, and no third-party analytics or tracking.</p>
 <h2>What we store</h2>
 <ul>
 <li><strong>Nothing on a server.</strong> The site is served as static files by GitHub Pages; there is no backend and no cookies are set.</li>
