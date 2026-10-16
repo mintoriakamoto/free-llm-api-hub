@@ -5,8 +5,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { badgeSvg, textWidth, COLORS } from './lib/badge-svg.mjs';
 import { execFileSync } from 'node:child_process';
+import { privateTree } from './lib/private-tree.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 test('badgeSvg: label, message and colour are in the file, the sizes add up, and the same input gives the same bytes', () => {
   const a = badgeSvg({ label: 'verified', message: '67/68', color: 'brightgreen' });
@@ -23,6 +24,8 @@ test('badgeSvg: text is escaped and an unknown colour name throws instead of shi
   assert.throws(() => badgeSvg({ label: 'a', message: 'b', color: 'chartreuse' }), /colour not known/);
 });
 test('the built site serves the verified badge itself: it matches the endpoint file and no page asks another origin for an image', () => {
+  // built in a private copy, like the other suites: building in the real tree races with the suites that copy it
+  const ROOT = privateTree(REPO);
   execFileSync(process.execPath, [join(ROOT, 'scripts/build.mjs')], { cwd: ROOT, stdio: 'pipe' });
   const json = JSON.parse(readFileSync(join(ROOT, 'site/badge-verified.json'), 'utf8'));
   assert.equal(readFileSync(join(ROOT, 'site/badge-verified.svg'), 'utf8'), badgeSvg(json).svg);
